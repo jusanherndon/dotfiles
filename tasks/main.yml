@@ -1,0 +1,34 @@
+---
+- name: Create the dotfiles directory
+  file:
+    path: "/home/{{ user }}/dotfiles"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+    
+- name: Moving dotfiles to that directory
+  copy:
+    src: "{{ item }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    dest: "/home/{{ user }}/dotfiles/" 
+  loop: 
+    - .tmux.conf
+    - .vimrc
+
+- name: templating .zshrc
+  template:
+    src:  ".zshrc.j2"  
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    dest: "/home/{{ user }}/dotfiles"
+
+- name: making symbolic links
+  file:
+    src: "/home/{{ user }}/dotfiles/{{ item }}"
+    dest: "/home/{{ user }}/{{ item }}"
+    state: link
+  loop:
+    - .tmux.conf
+    - .vimrc
+    - .zshrc
