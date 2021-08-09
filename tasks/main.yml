@@ -21,7 +21,7 @@
     src:  ".zshrc.j2"  
     owner: "{{ user }}"
     group: "{{ user }}"
-    dest: "/home/{{ user }}/dotfiles"
+    dest: "/home/{{ user }}/dotfiles/.zshrc"
 
 - name: making symbolic links
   file:
